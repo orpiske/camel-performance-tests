@@ -9,6 +9,7 @@ import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.engine.PrototypeExchangeFactory;
 import org.junit.jupiter.api.Test;
 import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
@@ -35,9 +36,8 @@ public class CreateExchangeTest {
                 .warmupTime(TimeValue.seconds(1))
                 .warmupIterations(2)
                 .measurementTime(TimeValue.seconds(1))
-                .measurementIterations(2)
+                .measurementIterations(5)
                 .threads(Runtime.getRuntime().availableProcessors())
-                .forks(1)
                 .shouldFailOnError(true)
                 .shouldDoGC(true)
                 .build();
@@ -64,6 +64,7 @@ public class CreateExchangeTest {
 
     @Benchmark
     @Measurement(batchSize = 1000000)
+    @Fork(1)
     public void benchmarkWithAdapt(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
         final Exchange exchange = state.factory.create(true);
 
@@ -73,6 +74,7 @@ public class CreateExchangeTest {
 
     @Benchmark
     @Measurement(batchSize = 1000000)
+    @Fork(1)
     public void benchmarkWithSampleSet(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
         final Exchange exchange = state.factory.create(true);
 
@@ -82,6 +84,7 @@ public class CreateExchangeTest {
 
     @Benchmark
     @Measurement(batchSize = 1000000)
+    @Fork(1)
     public void benchmarkWithNoSet(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
         final Exchange exchange = state.factory.create(true);
 
