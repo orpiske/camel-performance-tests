@@ -64,7 +64,7 @@ public class CreateExchangeTest {
 
     @Benchmark
     @Measurement(batchSize = 10000000)
-    public void benchmarkWithAdapt(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+    public void benchmarkWithExchangeAndAdaptSet(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
         final Exchange exchange = state.factory.create(true);
 
         exchange.adapt(ExtendedExchange.class).setFromRouteId("Something");
@@ -90,7 +90,7 @@ public class CreateExchangeTest {
 
     @Benchmark
     @Measurement(batchSize = 10000000)
-    public void benchmarkWithDefaultExchangeAndAdapt(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+    public void benchmarkWithDefaultExchangeAndAdaptSet(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
         final DefaultExchange exchange = new DefaultExchange(state.context);
 
         exchange.adapt(ExtendedExchange.class).setFromRouteId("Something");
