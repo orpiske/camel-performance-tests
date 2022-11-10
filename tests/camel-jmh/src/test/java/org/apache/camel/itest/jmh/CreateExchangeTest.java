@@ -47,7 +47,7 @@ public class CreateExchangeTest {
 
     // The JMH samples are the best documentation for how to use it
     // http://hg.openjdk.java.net/code-tools/jmh/file/tip/jmh-samples/src/main/java/org/openjdk/jmh/samples/
-    @State(Scope.Thread)
+    @State(Scope.Benchmark)
     public static class BenchmarkState {
         CamelContext context;
         PrototypeExchangeFactory factory;
