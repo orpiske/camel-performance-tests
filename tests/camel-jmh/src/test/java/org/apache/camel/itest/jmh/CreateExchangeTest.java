@@ -7,6 +7,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.ExtendedExchange;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.engine.PrototypeExchangeFactory;
+import org.apache.camel.support.DefaultExchange;
 import org.junit.jupiter.api.Test;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Fork;
@@ -36,7 +37,7 @@ public class CreateExchangeTest {
                 .warmupTime(TimeValue.seconds(1))
                 .warmupIterations(2)
                 .measurementTime(TimeValue.seconds(5))
-                .measurementIterations(30)
+                .measurementIterations(5)
                 .threads(Runtime.getRuntime().availableProcessors())
                 .shouldFailOnError(true)
                 .shouldDoGC(true)
@@ -54,8 +55,8 @@ public class CreateExchangeTest {
 
         @Setup(Level.Trial)
         public void initialize() {
-             context = new DefaultCamelContext();
-             factory = new PrototypeExchangeFactory();
+            context = new DefaultCamelContext();
+            factory = new PrototypeExchangeFactory();
 
             factory.setCamelContext(context);
         }
@@ -88,6 +89,26 @@ public class CreateExchangeTest {
     public void benchmarkWithNoSet(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
         final Exchange exchange = state.factory.create(true);
 
+        bh.consume(exchange);
+    }
+
+    @Benchmark
+    @Measurement(batchSize = 1000000)
+    @Fork(1)
+    public void benchmarkWithDefaultExchangeAndAdapt(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+        final DefaultExchange exchange = new DefaultExchange(state.context);
+
+        exchange.adapt(ExtendedExchange.class).setFromRouteId("Something");
+        bh.consume(exchange);
+    }
+
+    @Benchmark
+    @Measurement(batchSize = 1000000)
+    @Fork(1)
+    public void benchmarkWithDefaultExchangeAndSet(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+        final DefaultExchange exchange = new DefaultExchange(state.context);
+
+        exchange.setFromRouteId("Something");
         bh.consume(exchange);
     }
 
