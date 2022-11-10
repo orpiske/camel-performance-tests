@@ -31,11 +31,11 @@ public class CreateExchangeTest {
                 // You can be more specific if you'd like to run only one benchmark per test.
                 .include(this.getClass().getName() + ".*")
                 // Set the following options as needed
-                .mode(Mode.All)
+                .mode(Mode.SingleShotTime)
                 .timeUnit(TimeUnit.MICROSECONDS)
                 .warmupTime(TimeValue.seconds(1))
                 .warmupIterations(2)
-                .measurementTime(TimeValue.seconds(1))
+                .measurementTime(TimeValue.seconds(5))
                 .measurementIterations(5)
                 .threads(Runtime.getRuntime().availableProcessors())
                 .shouldFailOnError(true)
