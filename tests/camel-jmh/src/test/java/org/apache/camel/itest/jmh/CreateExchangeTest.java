@@ -36,7 +36,7 @@ public class CreateExchangeTest {
                 .warmupTime(TimeValue.seconds(1))
                 .warmupIterations(2)
                 .measurementTime(TimeValue.seconds(5))
-                .measurementIterations(5)
+                .measurementIterations(30)
                 .threads(Runtime.getRuntime().availableProcessors())
                 .shouldFailOnError(true)
                 .shouldDoGC(true)
