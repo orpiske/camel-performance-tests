@@ -36,8 +36,8 @@ public class CreateExchangeTest {
                 .timeUnit(TimeUnit.MICROSECONDS)
 //                .warmupTime(TimeValue.seconds(1))
 //                .warmupIterations(2)
-//                .measurementTime(TimeValue.seconds(5))
-//                .measurementIterations(5)
+                .measurementTime(TimeValue.seconds(5))
+                .measurementIterations(5)
                 .threads(Runtime.getRuntime().availableProcessors())
                 .forks(1)
                 .build();
