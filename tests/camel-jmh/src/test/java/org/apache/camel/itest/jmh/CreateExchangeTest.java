@@ -63,7 +63,7 @@ public class CreateExchangeTest {
 
 
     @Benchmark
-    @Measurement(batchSize = 1000000)
+    @Measurement(batchSize = 10000000)
     public void benchmarkWithAdapt(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
         final Exchange exchange = state.factory.create(true);
 
