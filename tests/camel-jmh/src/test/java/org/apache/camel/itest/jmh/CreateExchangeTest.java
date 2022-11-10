@@ -63,7 +63,7 @@ public class CreateExchangeTest {
 
 
     @Benchmark
-    @Measurement(batchSize = 10000000)
+    @Measurement(batchSize = 5000)
     public void benchmarkWithExchangeAndAdaptSet(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
         final Exchange exchange = state.factory.create(true);
 
@@ -72,7 +72,7 @@ public class CreateExchangeTest {
     }
 
     @Benchmark
-    @Measurement(batchSize = 10000000)
+    @Measurement(batchSize = 5000)
     public void benchmarkWithExchangeAndSet(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
         final Exchange exchange = state.factory.create(true);
 
@@ -81,7 +81,7 @@ public class CreateExchangeTest {
     }
 
     @Benchmark
-    @Measurement(batchSize = 10000000)
+    @Measurement(batchSize = 5000)
     public void benchmarkWithExchangeNoSet(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
         final Exchange exchange = state.factory.create(true);
 
@@ -89,7 +89,7 @@ public class CreateExchangeTest {
     }
 
     @Benchmark
-    @Measurement(batchSize = 10000000)
+    @Measurement(batchSize = 5000)
     public void benchmarkWithDefaultExchangeAndAdaptSet(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
         final DefaultExchange exchange = new DefaultExchange(state.context);
 
@@ -98,7 +98,7 @@ public class CreateExchangeTest {
     }
 
     @Benchmark
-    @Measurement(batchSize = 10000000)
+    @Measurement(batchSize = 5000)
     public void benchmarkWithDefaultExchangeAndSet(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
         final DefaultExchange exchange = new DefaultExchange(state.context);
 
