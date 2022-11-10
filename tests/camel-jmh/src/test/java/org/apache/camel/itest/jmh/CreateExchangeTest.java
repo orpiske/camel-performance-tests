@@ -34,13 +34,12 @@ public class CreateExchangeTest {
                 // Set the following options as needed
                 .mode(Mode.SingleShotTime)
                 .timeUnit(TimeUnit.MICROSECONDS)
-                .warmupTime(TimeValue.seconds(1))
-                .warmupIterations(2)
-                .measurementTime(TimeValue.seconds(5))
-                .measurementIterations(5)
+//                .warmupTime(TimeValue.seconds(1))
+//                .warmupIterations(2)
+//                .measurementTime(TimeValue.seconds(5))
+//                .measurementIterations(5)
                 .threads(Runtime.getRuntime().availableProcessors())
-                .shouldFailOnError(true)
-                .shouldDoGC(true)
+                .forks(1)
                 .build();
 
         new Runner(opt).run();
@@ -65,7 +64,6 @@ public class CreateExchangeTest {
 
     @Benchmark
     @Measurement(batchSize = 1000000)
-    @Fork(1)
     public void benchmarkWithAdapt(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
         final Exchange exchange = state.factory.create(true);
 
@@ -75,7 +73,6 @@ public class CreateExchangeTest {
 
     @Benchmark
     @Measurement(batchSize = 1000000)
-    @Fork(1)
     public void benchmarkWithSampleSet(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
         final Exchange exchange = state.factory.create(true);
 
@@ -85,7 +82,6 @@ public class CreateExchangeTest {
 
     @Benchmark
     @Measurement(batchSize = 1000000)
-    @Fork(1)
     public void benchmarkWithNoSet(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
         final Exchange exchange = state.factory.create(true);
 
@@ -94,7 +90,6 @@ public class CreateExchangeTest {
 
     @Benchmark
     @Measurement(batchSize = 1000000)
-    @Fork(1)
     public void benchmarkWithDefaultExchangeAndAdapt(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
         final DefaultExchange exchange = new DefaultExchange(state.context);
 
@@ -104,7 +99,6 @@ public class CreateExchangeTest {
 
     @Benchmark
     @Measurement(batchSize = 1000000)
-    @Fork(1)
     public void benchmarkWithDefaultExchangeAndSet(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
         final DefaultExchange exchange = new DefaultExchange(state.context);
 
