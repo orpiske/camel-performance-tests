@@ -3,27 +3,23 @@ package org.apache.camel.itest.jmh;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.CamelContext;
-import org.apache.camel.Exchange;
 import org.apache.camel.ExtendedCamelContext;
-import org.apache.camel.ExtendedExchange;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.impl.engine.PrototypeExchangeFactory;
 import org.apache.camel.model.ModelCamelContext;
-import org.apache.camel.support.DefaultExchange;
 import org.junit.jupiter.api.Test;
 import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.annotations.Threads;
 import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
-import org.openjdk.jmh.runner.options.TimeValue;
 
 public class CreateExchangeTest {
 
@@ -38,7 +34,6 @@ public class CreateExchangeTest {
                 .timeUnit(TimeUnit.MICROSECONDS)
                 .measurementIterations(20)
                 .warmupIterations(5)
-                .threads(Runtime.getRuntime().availableProcessors())
                 .forks(1)
                 .build();
 
@@ -62,10 +57,7 @@ public class CreateExchangeTest {
         }
     }
 
-    // Proposed solution
-    @Benchmark
-    @Measurement(batchSize = 50000)
-    public void benchmarkWithCachedContext(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+    private static void cached(BenchmarkState state, Blackhole bh) {
         if (state.extendedCamelContext == null) {
             state.extendedCamelContext = state.context.adapt(ExtendedCamelContext.class);
         }
@@ -81,10 +73,7 @@ public class CreateExchangeTest {
         bh.consume(state.modelCamelContext);
     }
 
-    // What may happen in unhappy paths
-    @Benchmark
-    @Measurement(batchSize = 50000)
-    public void benchmarkWithInstanceOfAndAdapt(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+    private static void instanceOfAndAdapt(BenchmarkState state, Blackhole bh) {
         if (state.context instanceof ExtendedCamelContext) {
             final ExtendedCamelContext extendedCamelContext = state.context.adapt(ExtendedCamelContext.class);
             extendedCamelContext.setDescription("extended");
@@ -98,11 +87,7 @@ public class CreateExchangeTest {
         }
     }
 
-
-    // More closely represents the happy path in many of the Camel code
-    @Benchmark
-    @Measurement(batchSize = 50000)
-    public void benchmarkWithNoInstanceOfAndAdapt(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+    private static void noInstanceOf(BenchmarkState state, Blackhole bh) {
         final ExtendedCamelContext extendedCamelContext = state.context.adapt(ExtendedCamelContext.class);
         extendedCamelContext.setDescription("extended");
         bh.consume(extendedCamelContext);
@@ -110,7 +95,117 @@ public class CreateExchangeTest {
         final ModelCamelContext modelCamelContext = state.context.adapt(ModelCamelContext.class);
         modelCamelContext.setManagementName("model");
         bh.consume(modelCamelContext);
-
     }
+
+    // Proposed solution
+    @Benchmark
+    @Measurement(batchSize = 50000)
+    @Threads(1)
+    public void benchmarkWithCachedContext_1(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+        cached(state, bh);
+    }
+
+    @Benchmark
+    @Measurement(batchSize = 50000)
+    @Threads(2)
+    public void benchmarkWithCachedContext_2(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+        cached(state, bh);
+    }
+
+    @Benchmark
+    @Measurement(batchSize = 50000)
+    @Threads(4)
+    public void benchmarkWithCachedContext_4(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+        cached(state, bh);
+    }
+
+    @Benchmark
+    @Measurement(batchSize = 50000)
+    @Threads(8)
+    public void benchmarkWithCachedContext_8(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+        cached(state, bh);
+    }
+
+    @Benchmark
+    @Measurement(batchSize = 50000)
+    @Threads(16)
+    public void benchmarkWithCachedContext_16(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+        cached(state, bh);
+    }
+
+    // What may happen in unhappy paths
+    @Benchmark
+    @Measurement(batchSize = 50000)
+    @Threads(1)
+    public void benchmarkWithInstanceOfAndAdapt_1(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+        instanceOfAndAdapt(state, bh);
+    }
+
+    @Benchmark
+    @Measurement(batchSize = 50000)
+    @Threads(2)
+    public void benchmarkWithInstanceOfAndAdapt_2(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+        instanceOfAndAdapt(state, bh);
+    }
+
+    @Benchmark
+    @Measurement(batchSize = 50000)
+    @Threads(4)
+    public void benchmarkWithInstanceOfAndAdapt_4(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+        instanceOfAndAdapt(state, bh);
+    }
+
+    @Benchmark
+    @Measurement(batchSize = 50000)
+    @Threads(8)
+    public void benchmarkWithInstanceOfAndAdapt_8(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+        instanceOfAndAdapt(state, bh);
+    }
+
+    @Benchmark
+    @Measurement(batchSize = 50000)
+    @Threads(16)
+    public void benchmarkWithInstanceOfAndAdapt_16(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+        instanceOfAndAdapt(state, bh);
+    }
+
+    // More closely represents the happy path in many of the Camel code
+    @Benchmark
+    @Measurement(batchSize = 50000)
+    @Threads(1)
+    public void benchmarkWithNoInstanceOfAndAdapt_1(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+        noInstanceOf(state, bh);
+    }
+
+    @Benchmark
+    @Measurement(batchSize = 50000)
+    @Threads(2)
+    public void benchmarkWithNoInstanceOfAndAdapt_2(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+        noInstanceOf(state, bh);
+    }
+
+
+    @Benchmark
+    @Measurement(batchSize = 50000)
+    @Threads(4)
+    public void benchmarkWithNoInstanceOfAndAdapt_4(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+        noInstanceOf(state, bh);
+    }
+
+    @Benchmark
+    @Measurement(batchSize = 50000)
+    @Threads(8)
+    public void benchmarkWithNoInstanceOfAndAdapt_8(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+        noInstanceOf(state, bh);
+    }
+
+    @Benchmark
+    @Measurement(batchSize = 50000)
+    @Threads(16)
+    public void benchmarkWithNoInstanceOfAndAdapt_16(CreateExchangeTest.BenchmarkState state, Blackhole bh) {
+        noInstanceOf(state, bh);
+    }
+
+
 
 }
