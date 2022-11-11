@@ -32,7 +32,7 @@ public class CreateExchangeTest {
                 // Set the following options as needed
                 .mode(Mode.Throughput)
                 .timeUnit(TimeUnit.MICROSECONDS)
-                .measurementIterations(20)
+                .measurementIterations(10)
                 .warmupIterations(5)
                 .forks(1)
                 .build();
