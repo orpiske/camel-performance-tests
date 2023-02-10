@@ -20,7 +20,7 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-public class BlockingProducerToSeda {
+public class BlockingProducerToSedaTest {
 
     @Test
     public void launchBenchmark() throws Exception {
@@ -29,8 +29,6 @@ public class BlockingProducerToSeda {
                 // You can be more specific if you'd like to run only one benchmark per test.
                 .include(this.getClass().getName() + ".*")
                 // Set the following options as needed
-                .mode(Mode.Throughput)
-                .timeUnit(TimeUnit.MICROSECONDS)
                 .measurementIterations(10)
                 .warmupIterations(5)
                 .forks(1)
@@ -69,9 +67,9 @@ public class BlockingProducerToSeda {
     }
 
     @OutputTimeUnit(TimeUnit.MILLISECONDS)
-    @BenchmarkMode({Mode.Throughput, Mode.AverageTime, Mode.SampleTime, Mode.SingleShotTime})
+    @BenchmarkMode({Mode.Throughput, Mode.AverageTime, Mode.SingleShotTime})
     @Benchmark
-    public void benchmarkWithCachedContext_1(BlockingProducerToSeda.BenchmarkState state, Blackhole bh) {
+    public void sendBlocking(BlockingProducerToSedaTest.BenchmarkState state, Blackhole bh) {
         state.producerTemplate.sendBody("seda:test?blockWhenFull=true&offerTimeout=1000", "test");
     }
 
