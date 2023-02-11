@@ -54,7 +54,7 @@ public class DirectConcurrentTest {
                 .mode(Mode.AverageTime)
                 .timeUnit(TimeUnit.MICROSECONDS)
                 .warmupIterations(1)
-                .measurementIterations(5)
+                .measurementIterations(15)
                 .threads(4)
                 .forks(1)
                 .shouldFailOnError(true)
