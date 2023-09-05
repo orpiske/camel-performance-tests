@@ -85,6 +85,18 @@ public class BooleanConversions {
         return null;
     }
 
+    private static Boolean oldCustomParseBoolean(String str) {
+        if ("true".equalsIgnoreCase(str)) {
+            return Boolean.TRUE;
+        }
+
+        if ("false".equalsIgnoreCase(str)) {
+            return Boolean.FALSE;
+        }
+
+        return null;
+    }
+
     private static Boolean booleanValueOf(String str) {
         return Boolean.valueOf(str);
     }
@@ -101,6 +113,13 @@ public class BooleanConversions {
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
     public void testBooleanValueOf(Blackhole bh) {
         bh.consume(booleanValueOf(booleanArg));
+    }
+
+    @Benchmark
+    @BenchmarkMode(Mode.AverageTime)
+    @OutputTimeUnit(TimeUnit.MICROSECONDS)
+    public void testOldCustomParseBoolean(Blackhole bh) {
+        bh.consume(oldCustomParseBoolean(booleanArg));
     }
 
 }
