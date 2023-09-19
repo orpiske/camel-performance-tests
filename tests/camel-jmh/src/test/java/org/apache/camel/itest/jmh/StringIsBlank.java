@@ -47,6 +47,8 @@ public class StringIsBlank {
                 // You can be more specific if you'd like to run only one benchmark per test.
                 .include(this.getClass().getName() + ".*")
                 .forks(1)
+                .warmupIterations(10)
+                .measurementIterations(20)
                 .resultFormat(ResultFormatType.JSON)
                 .result(this.getClass().getSimpleName() + ".jmh.json")
                 .build();
@@ -60,18 +62,12 @@ public class StringIsBlank {
     private String largeBlankString = "                 ";
 
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
-    @Warmup(iterations = 10, batchSize = 5000)
-    @Measurement(iterations = 20, batchSize = 50000)
-    @BenchmarkMode(Mode.SingleShotTime)
     @Benchmark
     public void testLargeStringIsBlank(Blackhole bh) {
         bh.consume(largeString.isBlank());
     }
 
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
-    @Warmup(iterations = 10, batchSize = 5000)
-    @Measurement(iterations = 20, batchSize = 50000)
-    @BenchmarkMode(Mode.SingleShotTime)
     @Benchmark
     public void testLargeStringTrim(Blackhole bh) {
         bh.consume(largeString.trim().isEmpty());
@@ -79,36 +75,24 @@ public class StringIsBlank {
 
 
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
-    @Warmup(iterations = 10, batchSize = 5000)
-    @Measurement(iterations = 20, batchSize = 50000)
-    @BenchmarkMode(Mode.SingleShotTime)
     @Benchmark
     public void testBlankStringIsBlank(Blackhole bh) {
         bh.consume(blankString.isBlank());
     }
 
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
-    @Warmup(iterations = 10, batchSize = 5000)
-    @Measurement(iterations = 20, batchSize = 50000)
-    @BenchmarkMode(Mode.SingleShotTime)
     @Benchmark
     public void testBlankStringTrim(Blackhole bh) {
         bh.consume(blankString.trim().isEmpty());
     }
 
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
-    @Warmup(iterations = 10, batchSize = 5000)
-    @Measurement(iterations = 20, batchSize = 50000)
-    @BenchmarkMode(Mode.SingleShotTime)
     @Benchmark
     public void testLargeBlankStringIsBlank(Blackhole bh) {
         bh.consume(largeBlankString.isBlank());
     }
 
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
-    @Warmup(iterations = 10, batchSize = 5000)
-    @Measurement(iterations = 20, batchSize = 50000)
-    @BenchmarkMode(Mode.SingleShotTime)
     @Benchmark
     public void testLargeBlankStringTrim(Blackhole bh) {
         bh.consume(largeBlankString.trim().isEmpty());
