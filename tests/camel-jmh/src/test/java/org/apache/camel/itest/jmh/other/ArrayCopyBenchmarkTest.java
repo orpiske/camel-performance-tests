@@ -34,12 +34,15 @@ public class ArrayCopyBenchmarkTest {
     private byte statefulAdvices;
     private Object[] sourceArray;
     private Object[] destArray;
-    private Object val = null;
+    private Object val;
 
     @Setup
     public void setup() {
         sourceArray = new Object[statefulAdvices];
         destArray = new Object[statefulAdvices];
+        val = null;
+
+        System.out.println("Array size: " + sourceArray.length);
     }
 
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
@@ -53,6 +56,12 @@ public class ArrayCopyBenchmarkTest {
     @Benchmark
     public void arraysFill(Blackhole bh) {
         Arrays.fill(destArray, val);
+        bh.consume(destArray);
+    }
+
+    @OutputTimeUnit(TimeUnit.MICROSECONDS)
+    @Benchmark
+    public void baseline(Blackhole bh) {
         bh.consume(destArray);
     }
 
