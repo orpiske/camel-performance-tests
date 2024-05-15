@@ -34,6 +34,7 @@ public class ArrayCopyBenchmarkTest {
     private byte statefulAdvices;
     private Object[] sourceArray;
     private Object[] destArray;
+    private Object val = null;
 
     @Setup
     public void setup() {
@@ -51,7 +52,7 @@ public class ArrayCopyBenchmarkTest {
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
     @Benchmark
     public void arraysFill(Blackhole bh) {
-        Arrays.fill(destArray, null);
+        Arrays.fill(destArray, val);
         bh.consume(destArray);
     }
 
