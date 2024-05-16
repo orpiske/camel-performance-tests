@@ -31,24 +31,24 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 @State(Scope.Benchmark)
 public class ArrayCopyBenchmarkTest {
 
-    private byte statefulAdvices;
     private Object[] sourceArray;
     private Object[] destArray;
     private Object val;
 
+    @Param({"1", "8", "16", "32", "64"})
+    public byte arg;
+
     @Setup
     public void setup() {
-        sourceArray = new Object[statefulAdvices];
-        destArray = new Object[statefulAdvices];
+        sourceArray = new Object[arg];
+        destArray = new Object[arg];
         val = null;
-
-//        System.out.println("Array size: " + sourceArray.length);
     }
 
     @OutputTimeUnit(TimeUnit.MICROSECONDS)
     @Benchmark
     public void systemArrayCopy(Blackhole bh) {
-        System.arraycopy(sourceArray, 0, destArray, 0, statefulAdvices);
+        System.arraycopy(sourceArray, 0, destArray, 0, arg);
         bh.consume(destArray);
     }
 
